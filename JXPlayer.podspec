@@ -7,7 +7,7 @@ Pod::Spec.new do |spec|
   spec.summary      = "基于SJVideoPlayer写的播放列表"
 
   spec.description  = <<-DESC
-		       播放列表
+		       播放列表，使用SJVideoPlayer开发，集成了缓存功能
                    DESC
 
   spec.homepage     = "https://github.com/zengjuexin/JXPlayer"

@@ -158,10 +158,10 @@ extension JXPlayer {
             }
         }
         //播放状态改变
-        self.player.playbackObserver.playbackStatusDidChangeExeBlock = { [weak self] player in
-            guard let self = self else { return }
-            
-        }
+//        self.player.playbackObserver.playbackStatusDidChangeExeBlock = { [weak self] player in
+//            guard let self = self else { return }
+//            
+//        }
         //播放控制改变的回调
         self.player.playbackObserver.timeControlStatusDidChangeExeBlock = { [weak self] player in
             guard let self = self else { return }
