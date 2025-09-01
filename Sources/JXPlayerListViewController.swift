@@ -29,19 +29,19 @@ import SJMediaCacheServer
 
 open class JXPlayerListViewController: UIViewController {
     
-    public var contentSize: CGSize {
+    open var contentSize: CGSize {
         return CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
     }
     
-    var ViewModelClass: JXPlayerListViewModel.Type {
+    open var ViewModelClass: JXPlayerListViewModel.Type {
         return JXPlayerListViewModel.self
     }
     
     
-    public weak var delegate: JXPlayerListViewControllerDelegate?
-    public weak var dataSource: JXPlayerListViewControllerDataSource?
+    open weak var delegate: JXPlayerListViewControllerDelegate?
+    open weak var dataSource: JXPlayerListViewControllerDataSource?
     
-    private(set) lazy var viewModel: JXPlayerListViewModel = {
+    public lazy var viewModel: JXPlayerListViewModel = {
         let viewModel = JXPlayerListViewModel()
         viewModel.playerListVC = self
         return viewModel
@@ -51,7 +51,7 @@ open class JXPlayerListViewController: UIViewController {
     private var prePrefetchTask: MCSPrefetchTask?
     private var nextPrefetchTask: MCSPrefetchTask?
     
-    private(set) var jx_isDidAppear = false
+    public var jx_isDidAppear = false
     
     private lazy var collectionViewLayout: UICollectionViewLayout = {
         let layout = UICollectionViewFlowLayout()
@@ -61,7 +61,7 @@ open class JXPlayerListViewController: UIViewController {
         return layout
     }()
     
-    private(set) lazy var collectionView: UICollectionView = {
+    public lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .init(x: 0, y: 0, width: contentSize.width, height: contentSize.height), collectionViewLayout: collectionViewLayout)
         collectionView.backgroundColor = .clear
         collectionView.contentInsetAdjustmentBehavior = .never
@@ -118,11 +118,11 @@ open class JXPlayerListViewController: UIViewController {
     }
     
     ///返回上个视频路径  需要子类重写  预加载用
-    public var previousVideoUrl: String? { return nil }
+    open var previousVideoUrl: String? { return nil }
     ///返回下个视频路径 需要子类重写  预加载用
-    public var nextVideoUrl: String? { return nil }
+    open var nextVideoUrl: String? { return nil }
     
-    public func play() {
+    open func play() {
         if self.jx_isDidAppear {
             self.viewModel.currentCell?.start()
         }
@@ -134,12 +134,12 @@ open class JXPlayerListViewController: UIViewController {
         }
     }
     
-    public func pause() {
+    open func pause() {
         self.viewModel.currentCell?.pause()
         self.viewModel.isPlaying = false
     }
     
-    public func clearData() {
+    open func clearData() {
         self.viewModel.currentCell = nil
         self.viewModel.currentIndexPath = .init(row: 0, section: 0)
         self.collectionView.contentOffset = .init(x: 0, y: 0)
@@ -276,13 +276,13 @@ extension JXPlayerListViewController {
 //MARK: --------------   系统回调  --------------
 extension JXPlayerListViewController {
     
-    @objc public func didBecomeActiveNotification() {
+    @objc open func didBecomeActiveNotification() {
         if self.viewModel.isPlaying && jx_isDidAppear {
             self.viewModel.currentCell?.start()
         }
     }
     
-    @objc public func willResignActiveNotification() {
+    @objc open func willResignActiveNotification() {
         self.viewModel.currentCell?.pause()
     }
 }

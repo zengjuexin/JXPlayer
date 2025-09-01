@@ -5,45 +5,45 @@ import UIKit
 
 open class JXPlayerListCell: UICollectionViewCell, JXPlayerCell {
     
-    var ControlViewClass: JXPlayerListControlView.Type {
+    open var ControlViewClass: JXPlayerListControlView.Type {
         return JXPlayerListControlView.self
     }
     
-    public var model: Any?
+    open var model: Any?
     
-    weak public var viewModel: JXPlayerListViewModel? {
+    weak open var viewModel: JXPlayerListViewModel? {
         didSet {
             self.controlView.viewModel = viewModel
         }
     }
     
-    public var isCurrent: Bool = false {
+    open var isCurrent: Bool = false {
         didSet {
             self.controlView.isCurrent = isCurrent
         }
     }
     
-    public var durationTime: TimeInterval {
+    open var durationTime: TimeInterval {
         return player.duration
     }
     
-    public var currentTime: TimeInterval {
+    open var currentTime: TimeInterval {
         return player.currentTime
     }
     
-    public var rate: Float = 1 {
+    open var rate: Float = 1 {
         didSet {
             self.player.rate = rate
         }
     }
     
     
-    private lazy var controlView: JXPlayerListControlView = {
+    public lazy var controlView: JXPlayerListControlView = {
         let view = ControlViewClass.init()
         return view
     }()
     
-    private(set) lazy var player: JXPlayer = {
+    public lazy var player: JXPlayer = {
         let player = JXPlayer(controlView: self.controlView)
         player.playerView = self.playerView
         player.delegate = self
@@ -51,7 +51,7 @@ open class JXPlayerListCell: UICollectionViewCell, JXPlayerCell {
         return player
     }()
     
-    private(set) lazy var playerView: UIView = {
+    public lazy var playerView: UIView = {
         let view = UIView()
         return view
     }()
@@ -72,23 +72,23 @@ open class JXPlayerListCell: UICollectionViewCell, JXPlayerCell {
     }
     
     
-    public func start() {
+    open func start() {
         player.start()
     }
     
-    public func pause() {
+    open func pause() {
         player.pause()
     }
     
-    public func stop() {
+    open func stop() {
         player.stop()
     }
     
-    public func replay() {
+    open func replay() {
         player.replay()
     }
     
-    public func seekTo(progress: Float) {
+    open func seekTo(progress: Float) {
         let duration = self.durationTime
         let time = duration * TimeInterval(progress)
         self.player.seek(toTime: time)
@@ -97,31 +97,31 @@ open class JXPlayerListCell: UICollectionViewCell, JXPlayerCell {
 
 extension JXPlayerListCell: JXPlayerDelegate {
     
-    public func jx_playerReadyToPlay(_ player: JXPlayer) {
+    open func jx_playerReadyToPlay(_ player: JXPlayer) {
         
     }
     ///更新当前总进度
-    public func jx_playerDurationDidChange(_ player: JXPlayer, duration: TimeInterval) {
+    open func jx_playerDurationDidChange(_ player: JXPlayer, duration: TimeInterval) {
         self.controlView.durationTime = duration
     }
     ///更新当前进度
-    public func jx_playerCurrentTimeDidChange(_ player: JXPlayer, time: TimeInterval) {
+    open func jx_playerCurrentTimeDidChange(_ player: JXPlayer, time: TimeInterval) {
         self.controlView.currentTime = time
         self.viewModel?.playProgressDidChange(player: self, time: time)
     }
     
     ///播放完成
-    public func jx_playerDidPlayFinish(_ player: JXPlayer) {
+    open func jx_playerDidPlayFinish(_ player: JXPlayer) {
         self.viewModel?.playFinish(player: self)
     }
     
     ///调用了播放但是在缓冲中导致没有正常播放
-    public func jx_playerInBufferToPlay(_ player: JXPlayer) {
+    open func jx_playerInBufferToPlay(_ player: JXPlayer) {
         self.controlView.isLoading = true
     }
     
     ///调用了播放，缓冲完成正常播放
-    public func jx_playerBufferingCompleted(_ player: JXPlayer) {
+    open func jx_playerBufferingCompleted(_ player: JXPlayer) {
         self.controlView.isLoading = false
     }
     

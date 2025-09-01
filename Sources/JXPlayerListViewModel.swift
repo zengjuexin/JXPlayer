@@ -6,7 +6,7 @@ open class JXPlayerListViewModel: NSObject {
     
     weak public var playerListVC: JXPlayerListViewController?
     
-    public var currentCell: JXPlayerCell? {
+    open var currentCell: JXPlayerCell? {
         didSet {
             oldValue?.isCurrent = false
             oldValue?.pause()
@@ -15,9 +15,9 @@ open class JXPlayerListViewModel: NSObject {
         }
     }
     
-    @objc public dynamic var isPlaying: Bool = true
+    @objc open dynamic var isPlaying: Bool = true
     
-    public var currentIndexPath = IndexPath(row: 0, section: 0)
+    open var currentIndexPath = IndexPath(row: 0, section: 0)
     
     
 }
@@ -25,9 +25,9 @@ open class JXPlayerListViewModel: NSObject {
 extension JXPlayerListViewModel {
     
     ///播放进度变化
-    @objc public func playProgressDidChange(player: JXPlayerCell, time: TimeInterval) { }
+    @objc open func playProgressDidChange(player: JXPlayerCell, time: TimeInterval) { }
     
     ///播放完成
-    @objc public func playFinish(player: JXPlayerCell) { }
+    @objc open func playFinish(player: JXPlayerCell) { }
     
 }
