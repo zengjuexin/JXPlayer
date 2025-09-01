@@ -42,7 +42,7 @@ open class JXPlayerListViewController: UIViewController {
     open weak var dataSource: JXPlayerListViewControllerDataSource?
     
     public lazy var viewModel: JXPlayerListViewModel = {
-        let viewModel = JXPlayerListViewModel()
+        let viewModel = ViewModelClass.init()
         viewModel.playerListVC = self
         return viewModel
     }()

@@ -19,6 +19,9 @@ open class JXPlayerListViewModel: NSObject {
     
     open var currentIndexPath = IndexPath(row: 0, section: 0)
     
+    required public override init() {
+        
+    }
     
 }
 
