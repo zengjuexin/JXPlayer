@@ -3,35 +3,35 @@ import UIKit
 
 
 
-class JXPlayerListCell: UICollectionViewCell, JXPlayerCell {
+open class JXPlayerListCell: UICollectionViewCell, JXPlayerCell {
     
     var ControlViewClass: JXPlayerListControlView.Type {
         return JXPlayerListControlView.self
     }
     
-    var model: Any?
+    public var model: Any?
     
-    weak var viewModel: JXPlayerListViewModel? {
+    weak public var viewModel: JXPlayerListViewModel? {
         didSet {
             self.controlView.viewModel = viewModel
         }
     }
     
-    var isCurrent: Bool = false {
+    public var isCurrent: Bool = false {
         didSet {
             self.controlView.isCurrent = isCurrent
         }
     }
     
-    var durationTime: TimeInterval {
+    public var durationTime: TimeInterval {
         return player.duration
     }
     
-    var currentTime: TimeInterval {
+    public var currentTime: TimeInterval {
         return player.currentTime
     }
     
-    var rate: Float = 1 {
+    public var rate: Float = 1 {
         didSet {
             self.player.rate = rate
         }
@@ -57,7 +57,7 @@ class JXPlayerListCell: UICollectionViewCell, JXPlayerCell {
     }()
     
     
-    override init(frame: CGRect) {
+    override public init(frame: CGRect) {
         super.init(frame: frame)
         
         contentView.addSubview(playerView)
@@ -67,28 +67,28 @@ class JXPlayerListCell: UICollectionViewCell, JXPlayerCell {
         
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     
-    func start() {
+    public func start() {
         player.start()
     }
     
-    func pause() {
+    public func pause() {
         player.pause()
     }
     
-    func stop() {
+    public func stop() {
         player.stop()
     }
     
-    func replay() {
+    public func replay() {
         player.replay()
     }
     
-    func seekTo(progress: Float) {
+    public func seekTo(progress: Float) {
         let duration = self.durationTime
         let time = duration * TimeInterval(progress)
         self.player.seek(toTime: time)
@@ -97,31 +97,31 @@ class JXPlayerListCell: UICollectionViewCell, JXPlayerCell {
 
 extension JXPlayerListCell: JXPlayerDelegate {
     
-    func jx_playerReadyToPlay(_ player: JXPlayer) {
+    public func jx_playerReadyToPlay(_ player: JXPlayer) {
         
     }
     ///更新当前总进度
-    func jx_playerDurationDidChange(_ player: JXPlayer, duration: TimeInterval) {
+    public func jx_playerDurationDidChange(_ player: JXPlayer, duration: TimeInterval) {
         self.controlView.durationTime = duration
     }
     ///更新当前进度
-    func jx_playerCurrentTimeDidChange(_ player: JXPlayer, time: TimeInterval) {
+    public func jx_playerCurrentTimeDidChange(_ player: JXPlayer, time: TimeInterval) {
         self.controlView.currentTime = time
         self.viewModel?.playProgressDidChange(player: self, time: time)
     }
     
     ///播放完成
-    func jx_playerDidPlayFinish(_ player: JXPlayer) {
+    public func jx_playerDidPlayFinish(_ player: JXPlayer) {
         self.viewModel?.playFinish(player: self)
     }
     
     ///调用了播放但是在缓冲中导致没有正常播放
-    func jx_playerInBufferToPlay(_ player: JXPlayer) {
+    public func jx_playerInBufferToPlay(_ player: JXPlayer) {
         self.controlView.isLoading = true
     }
     
     ///调用了播放，缓冲完成正常播放
-    func jx_playerBufferingCompleted(_ player: JXPlayer) {
+    public func jx_playerBufferingCompleted(_ player: JXPlayer) {
         self.controlView.isLoading = false
     }
     

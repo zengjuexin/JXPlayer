@@ -1,13 +1,8 @@
-//
-//  JXPlayerCell.swift
-//  JXPlayer
-//
-//  Created by 长沙鸿瑶 on 2025/8/30.
-//
+
 import UIKit
 
 
-@objc protocol JXPlayerCell: NSObjectProtocol {
+@objc public protocol JXPlayerCell: NSObjectProtocol {
     
     var model: Any? { get set }
     

@@ -4,12 +4,12 @@ import SJVideoPlayer
 import SJMediaCacheServer
 
 
-protocol JXPlayerControlView: NSObjectProtocol {
+public protocol JXPlayerControlView: NSObjectProtocol {
     var isCurrent: Bool { get set }
     func singleTapEvent()
 }
 
-@objc protocol JXPlayerDelegate: NSObjectProtocol {
+@objc public protocol JXPlayerDelegate: NSObjectProtocol {
     
     @objc optional func jx_playerReadyToPlay(_ player: JXPlayer)
     ///更新当前总进度
@@ -27,7 +27,7 @@ protocol JXPlayerControlView: NSObjectProtocol {
     @objc optional func jx_playerBufferingCompleted(_ player: JXPlayer)
 }
 
-class JXPlayer: NSObject {
+open class JXPlayer: NSObject {
     
     private(set) var isPlaying = false
     
@@ -45,9 +45,9 @@ class JXPlayer: NSObject {
         return player
     }()
     
-    weak var delegate: JXPlayerDelegate?
+    public weak var delegate: JXPlayerDelegate?
     
-    weak var playerView: UIView? {
+    public weak var playerView: UIView? {
         didSet {
             playerView?.addSubview(player.view)
             player.view.frame = playerView?.bounds ?? .zero
@@ -57,24 +57,24 @@ class JXPlayer: NSObject {
 
     private(set) weak var jx_controlView: JXPlayerControlView?
     ///控制层自动隐藏
-    var controlAutomaticallyDisappear = true
+    public var controlAutomaticallyDisappear = true
     
-    var coverImageView: UIImageView? {
+    public var coverImageView: UIImageView? {
         return self.player.presentView.placeholderImageView
     }
     
-    var isLoop = false
+    public var isLoop = false
     
     ///精确到秒
-    var duration: TimeInterval {
+    public var duration: TimeInterval {
         return self.player.duration
     }
     
-    var currentTime: TimeInterval {
+    public var currentTime: TimeInterval {
         return self.player.currentTime
     }
     
-    var rate: Float {
+    public var rate: Float {
         get {
             return self.player.rate
         }
@@ -83,7 +83,7 @@ class JXPlayer: NSObject {
         }
     }
     
-    init(controlView: JXPlayerControlView?) {
+    public init(controlView: JXPlayerControlView?) {
         super.init()
         self.jx_controlView = controlView
         player.controlLayerNeedAppear()
@@ -91,7 +91,7 @@ class JXPlayer: NSObject {
         setupPlayer()
     }
     
-    func setPlayUrl(url: String) {
+    public func setPlayUrl(url: String) {
         self.stop()
         guard let url = URL(string: url) else { return }
         guard let proxyUrl = SJMediaCacheServer.shared().proxyURL(from: url) else { return }
@@ -100,26 +100,26 @@ class JXPlayer: NSObject {
         self.player.urlAsset = asset
     }
     
-    func start() {
+    public func start() {
         self.isPlaying = true
         self.player.play()
     }
     
-    func pause() {
+    public func pause() {
         self.isPlaying = false
         self.player.pause()
     }
     
-    func stop() {
+    public func stop() {
         self.isPlaying = false
         self.player.stop()
     }
     
-    func replay() {
+    public func replay() {
         player.replay()
     }
     
-    func seek(toTime: TimeInterval) {
+    public func seek(toTime: TimeInterval) {
         self.player.seek(toTime: toTime)
     }
 }
@@ -196,7 +196,7 @@ extension JXPlayer {
 
 //MARK: --------------   SJVideoPlayerControlLayerDataSource  --------------
 extension JXPlayer: SJVideoPlayerControlLayerDataSource {
-    func controlView() -> UIView? {
+    public func controlView() -> UIView? {
         return self.jx_controlView as? UIView
     }
 }

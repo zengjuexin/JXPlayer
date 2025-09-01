@@ -4,7 +4,7 @@ import UIKit
 import SJMediaCacheServer
 
 
-@objc protocol JXPlayerListViewControllerDelegate {
+@objc public protocol JXPlayerListViewControllerDelegate {
     
     @objc optional func jx_playerViewControllerShouldLoadMoreData(playerViewController: JXPlayerListViewController) -> Bool
     
@@ -16,7 +16,7 @@ import SJMediaCacheServer
     
 }
 
-@objc protocol JXPlayerListViewControllerDataSource {
+@objc public protocol JXPlayerListViewControllerDataSource {
     
     
     func jx_playerListViewController(_ viewController: JXPlayerListViewController, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
@@ -27,9 +27,9 @@ import SJMediaCacheServer
     
 }
 
-class JXPlayerListViewController: UIViewController {
+open class JXPlayerListViewController: UIViewController {
     
-    var contentSize: CGSize {
+    public var contentSize: CGSize {
         return CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
     }
     
@@ -38,8 +38,8 @@ class JXPlayerListViewController: UIViewController {
     }
     
     
-    weak var delegate: JXPlayerListViewControllerDelegate?
-    weak var dataSource: JXPlayerListViewControllerDataSource?
+    public weak var delegate: JXPlayerListViewControllerDelegate?
+    public weak var dataSource: JXPlayerListViewControllerDataSource?
     
     private(set) lazy var viewModel: JXPlayerListViewModel = {
         let viewModel = JXPlayerListViewModel()
@@ -80,7 +80,7 @@ class JXPlayerListViewController: UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
     
-    override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActiveNotification), name: UIApplication.didBecomeActiveNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(willResignActiveNotification), name: UIApplication.willResignActiveNotification, object: nil)
@@ -89,17 +89,17 @@ class JXPlayerListViewController: UIViewController {
         self.view.addSubview(self.collectionView)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         jx_isDidAppear = true
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
+    open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         jx_isDidAppear = false
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
+    open override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         jx_isDidAppear = false
         
@@ -109,20 +109,20 @@ class JXPlayerListViewController: UIViewController {
         }
     }
     
-    func register(_ cellClass: AnyClass?, forCellWithReuseIdentifier identifier: String) {
+    public func register(_ cellClass: AnyClass?, forCellWithReuseIdentifier identifier: String) {
         collectionView.register(cellClass, forCellWithReuseIdentifier: identifier)
     }
     
-    func dequeueReusableCell(withReuseIdentifier identifier: String, for indexPath: IndexPath) -> UICollectionViewCell {
+    public func dequeueReusableCell(withReuseIdentifier identifier: String, for indexPath: IndexPath) -> UICollectionViewCell {
         return self.collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath)
     }
     
     ///返回上个视频路径  需要子类重写  预加载用
-    var previousVideoUrl: String? { return nil }
+    public var previousVideoUrl: String? { return nil }
     ///返回下个视频路径 需要子类重写  预加载用
-    var nextVideoUrl: String? { return nil }
+    public var nextVideoUrl: String? { return nil }
     
-    func play() {
+    public func play() {
         if self.jx_isDidAppear {
             self.viewModel.currentCell?.start()
         }
@@ -134,19 +134,19 @@ class JXPlayerListViewController: UIViewController {
         }
     }
     
-    func pause() {
+    public func pause() {
         self.viewModel.currentCell?.pause()
         self.viewModel.isPlaying = false
     }
     
-    func clearData() {
+    public func clearData() {
         self.viewModel.currentCell = nil
         self.viewModel.currentIndexPath = .init(row: 0, section: 0)
         self.collectionView.contentOffset = .init(x: 0, y: 0)
         self.collectionView.reloadData()
     }
     
-    func reloadData(completion: (() -> Void)? = nil) {
+    public func reloadData(completion: (() -> Void)? = nil) {
         UIView.performWithoutAnimation {
             self.collectionView.reloadData()
         }
@@ -158,7 +158,7 @@ class JXPlayerListViewController: UIViewController {
         }
     }
     
-    func scrollToItem(indexPath: IndexPath, animated: Bool = true, completer: (() -> Void)? = nil) {
+    public func scrollToItem(indexPath: IndexPath, animated: Bool = true, completer: (() -> Void)? = nil) {
         UIView.performWithoutAnimation {
             self.collectionView.scrollToItem(at: indexPath, at: .top, animated: animated);
         }
@@ -181,7 +181,7 @@ class JXPlayerListViewController: UIViewController {
 extension JXPlayerListViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         var cell: UICollectionViewCell
         if let newCell = self.dataSource?.jx_playerListViewController(self, cellForItemAt: indexPath) {
             cell = newCell
@@ -201,7 +201,7 @@ extension JXPlayerListViewController: UICollectionViewDelegate, UICollectionView
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         
         self.prePrefetchTask?.cancel()
         self.nextPrefetchTask?.cancel()
@@ -210,20 +210,20 @@ extension JXPlayerListViewController: UICollectionViewDelegate, UICollectionView
         self.nextPrefetchTask = self.prefetchTask(url: self.nextVideoUrl)
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.dataSource?.jx_playerListViewController(self, numberOfItemsInSection: section) ?? 0
     }
     
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
+    public func numberOfSections(in collectionView: UICollectionView) -> Int {
         self.dataSource?.jx_numberOfSections?(in: self) ?? 1
     }
     
     //滑动停止
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         scrollDidEnd()
     }
     
-    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+    public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         scrollDidEnd()
     }
     
@@ -276,13 +276,13 @@ extension JXPlayerListViewController {
 //MARK: --------------   系统回调  --------------
 extension JXPlayerListViewController {
     
-    @objc func didBecomeActiveNotification() {
+    @objc public func didBecomeActiveNotification() {
         if self.viewModel.isPlaying && jx_isDidAppear {
             self.viewModel.currentCell?.start()
         }
     }
     
-    @objc func willResignActiveNotification() {
+    @objc public func willResignActiveNotification() {
         self.viewModel.currentCell?.pause()
     }
 }
