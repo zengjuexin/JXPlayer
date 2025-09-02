@@ -3,7 +3,7 @@
 Pod::Spec.new do |spec|
 
   spec.name         = "JXPlayer"
-  spec.version      = "0.0.7"
+  spec.version      = "0.0.8"
   spec.summary      = "基于SJVideoPlayer写的播放列表"
 
   spec.description  = <<-DESC

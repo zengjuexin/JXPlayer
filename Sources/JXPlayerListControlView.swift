@@ -4,9 +4,11 @@ import UIKit
 
 open class JXPlayerListControlView: UIView, JXPlayerControlView {
     
-    open var isCurrent: Bool = false
-    
     weak open var viewModel: JXPlayerListViewModel?
+    
+    open var model: Any?
+    
+    open var isCurrent: Bool = false
     
     open var durationTime: TimeInterval = 0
     open var currentTime: TimeInterval = 0

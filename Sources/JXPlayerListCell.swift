@@ -9,11 +9,15 @@ open class JXPlayerListCell: UICollectionViewCell, JXPlayerCell {
         return JXPlayerListControlView.self
     }
     
-    open var model: Any?
-    
     weak open var viewModel: JXPlayerListViewModel? {
         didSet {
             self.controlView.viewModel = viewModel
+        }
+    }
+    
+    open var model: Any? {
+        didSet {
+            self.controlView.model = model
         }
     }
     
