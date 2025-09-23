@@ -174,6 +174,29 @@ open class JXPlayerListViewController: UIViewController {
             completer?()
         }
     }
+    
+    ///滑动至下一级
+    private func scrollToNextEpisode() {
+        var contentOffset = self.collectionView.contentOffset
+        
+        if hasNextEpisode() {
+            contentOffset.y = floor(contentOffset.y + self.contentSize.height)
+            self.collectionView.setContentOffset(contentOffset, animated: true)
+        } else {
+            self.viewModel.currentCell?.replay()
+        }
+    }
+    
+    
+    ///是否还有下一级
+    private func hasNextEpisode() -> Bool {
+        let contentOffset = self.collectionView.contentOffset
+        let contentSize = self.collectionView.contentSize
+        if contentOffset.y >= contentSize.height - self.contentSize.height {
+            return false
+        }
+        return true
+    }
 
 }
 
