@@ -176,7 +176,7 @@ open class JXPlayerListViewController: UIViewController {
     }
     
     ///滑动至下一级
-    private func scrollToNextEpisode() {
+    open func scrollToNextEpisode() {
         var contentOffset = self.collectionView.contentOffset
         
         if hasNextEpisode() {
@@ -189,7 +189,7 @@ open class JXPlayerListViewController: UIViewController {
     
     
     ///是否还有下一级
-    private func hasNextEpisode() -> Bool {
+    open func hasNextEpisode() -> Bool {
         let contentOffset = self.collectionView.contentOffset
         let contentSize = self.collectionView.contentSize
         if contentOffset.y >= contentSize.height - self.contentSize.height {

@@ -23,7 +23,7 @@ open class JXPlayerListViewModel: NSObject {
         
     }
     
-    func seekTo(_ progress: Float) {
+    @objc open func seekTo(_ progress: Float) {
         self.currentCell?.seekTo(progress: progress)
     }
     
