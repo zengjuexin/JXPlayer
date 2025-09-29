@@ -35,6 +35,17 @@ extension JXPlayerListViewModel {
     @objc open func playProgressDidChange(player: JXPlayerCell, time: TimeInterval) { }
     
     ///播放完成
-    @objc open func playFinish(player: JXPlayerCell) { }
+    @objc open func playFinish(player: JXPlayerCell) {
+        var isScroll = true
+        
+        if let result = self.playerListVC?.allowAutoScrollNextEpisode() {
+            isScroll = result
+        }
+        if isScroll {
+            self.playerListVC?.scrollToNextEpisode()
+        } else {
+            self.currentCell?.replay()
+        }
+    }
     
 }

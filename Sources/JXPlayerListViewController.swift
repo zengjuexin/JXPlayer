@@ -197,6 +197,10 @@ open class JXPlayerListViewController: UIViewController {
         }
         return true
     }
+    
+    public func allowAutoScrollNextEpisode() -> Bool? {
+        return self.delegate?.jx_shouldAutoScrollNextEpisode?(self)
+    }
 
 }
 
