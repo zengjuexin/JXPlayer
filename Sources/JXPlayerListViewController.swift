@@ -92,6 +92,9 @@ open class JXPlayerListViewController: UIViewController {
     open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         jx_isDidAppear = true
+        if self.viewModel.isPlaying {
+            self.viewModel.currentCell?.start()
+        }
     }
     
     open override func viewWillDisappear(_ animated: Bool) {
