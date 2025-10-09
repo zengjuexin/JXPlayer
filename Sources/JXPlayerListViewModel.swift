@@ -27,6 +27,15 @@ open class JXPlayerListViewModel: NSObject {
         self.currentCell?.seekTo(progress: progress)
     }
     
+    ///切换播放暂停
+    open func userSwitchPlayAndPause() {
+        if self.isPlaying {
+            self.playerListVC?.pause()
+        } else {
+            self.playerListVC?.play()
+        }
+    }
+    
 }
 
 extension JXPlayerListViewModel {
