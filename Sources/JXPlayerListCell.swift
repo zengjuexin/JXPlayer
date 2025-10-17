@@ -97,6 +97,10 @@ open class JXPlayerListCell: UICollectionViewCell, JXPlayerCell {
         let time = duration * TimeInterval(progress)
         self.player.seek(toTime: time)
     }
+    
+    open func seek(toTime: TimeInterval) {
+        self.player.seek(toTime: toTime)
+    }
 }
 
 extension JXPlayerListCell: JXPlayerDelegate {
