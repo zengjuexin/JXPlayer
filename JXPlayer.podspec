@@ -3,7 +3,7 @@
 Pod::Spec.new do |spec|
 
   spec.name         = "JXPlayer"
-  spec.version      = "0.1.6"
+  spec.version      = "0.1.7"
   spec.summary      = "基于SJVideoPlayer写的播放列表"
 
   spec.description  = <<-DESC
@@ -28,7 +28,7 @@ Pod::Spec.new do |spec|
   spec.source_files  = "Sources", "Sources/**/*.{h,m,swift}"
  # spec.exclude_files = "Classes/Exclude"
 
-  spec.dependency 'SJVideoPlayer'
-  spec.dependency 'SJMediaCacheServer'
+  spec.dependency 'SJVideoPlayer', '3.4.3'
+  spec.dependency 'SJMediaCacheServer', '2.1.6'
 
 end
