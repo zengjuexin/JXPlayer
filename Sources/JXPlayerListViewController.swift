@@ -162,6 +162,11 @@ open class JXPlayerListViewController: UIViewController {
     }
     
     public func scrollToItem(indexPath: IndexPath, animated: Bool = true, completer: (() -> Void)? = nil) {
+        guard cellTotalCount() > 0 else {
+            completer?()
+            return
+        }
+        
         UIView.performWithoutAnimation {
             self.collectionView.scrollToItem(at: indexPath, at: .top, animated: animated);
         }
@@ -203,6 +208,17 @@ open class JXPlayerListViewController: UIViewController {
     
     public func allowAutoScrollNextEpisode() -> Bool? {
         return self.delegate?.jx_shouldAutoScrollNextEpisode?(self)
+    }
+    
+    public func cellTotalCount() -> Int {
+        let sections = self.collectionView.numberOfSections
+        guard sections > 0 else { return 0 }
+        var count = 0
+        
+        for section in 0..<sections {
+            count += self.collectionView.numberOfItems(inSection: section)
+        }
+        return count
     }
 
 }
