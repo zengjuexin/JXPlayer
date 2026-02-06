@@ -31,7 +31,7 @@ open class JXPlayer: NSObject {
     
     private(set) var isPlaying = false
     
-    private lazy var player: SJBaseVideoPlayer = {
+    public lazy var player: SJBaseVideoPlayer = {
         let player = SJBaseVideoPlayer()
         player.delayInSecondsForHiddenPlaceholderImageView = 0
         player.autoplayWhenSetNewAsset = false
@@ -86,7 +86,7 @@ open class JXPlayer: NSObject {
     public init(controlView: JXPlayerControlView?) {
         super.init()
         self.jx_controlView = controlView
-        player.controlLayerNeedAppear()
+        self.controlLayerNeedAppear()
         
         setupPlayer()
     }
@@ -122,6 +122,14 @@ open class JXPlayer: NSObject {
     public func seek(toTime: TimeInterval) {
         self.player.seek(toTime: toTime)
     }
+    ///显示控制层
+    public func controlLayerNeedAppear() {
+        self.player.controlLayerNeedAppear()
+    }
+    ///隐藏控制层
+    public func controlLayerNeedDisappear() {
+        self.player.controlLayerNeedDisappear()
+    }
 }
 
 extension JXPlayer {
@@ -131,8 +139,8 @@ extension JXPlayer {
         self.player.gestureController.supportedGestureTypes = .singleTap
         self.player.gestureController.singleTapHandler = { [weak self] _, _ in
             guard let self = self else { return }
-            if !self.player.isControlLayerAppeared {
-                self.player.controlLayerNeedAppear()
+            if self.controlView()?.isHidden == true {
+                self.controlLayerNeedAppear()
             } else {
                 self.jx_controlView?.singleTapEvent()
             }
@@ -160,7 +168,7 @@ extension JXPlayer {
         //播放状态改变
 //        self.player.playbackObserver.playbackStatusDidChangeExeBlock = { [weak self] player in
 //            guard let self = self else { return }
-//            
+//
 //        }
         //播放控制改变的回调
         self.player.playbackObserver.timeControlStatusDidChangeExeBlock = { [weak self] player in
