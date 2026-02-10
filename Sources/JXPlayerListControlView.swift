@@ -1,8 +1,9 @@
 
 
 import UIKit
+import SJVideoPlayer
 
-open class JXPlayerListControlView: UIView, JXPlayerControlView {
+open class JXPlayerListControlView: UIView, JXPlayerControlViewProtocol {
     
     weak open var viewModel: JXPlayerListViewModel?
     
@@ -18,4 +19,26 @@ open class JXPlayerListControlView: UIView, JXPlayerControlView {
     open func singleTapEvent() {
         
     }
+    
+    public var restarted: Bool = false
+    
+    public func controlView() -> UIView! {
+        return self
+    }
+    
+    public func restartControlLayer() {
+        self.restarted = true
+        self.isHidden = false
+    }
+    
+    public func exitControlLayer() {
+        self.restarted = false
+        self.isHidden = true
+    }
+    
+    public func installedControlView(to videoPlayer: SJBaseVideoPlayer!) {
+        
+    }
 }
+
+

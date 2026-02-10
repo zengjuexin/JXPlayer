@@ -4,7 +4,7 @@ import SJVideoPlayer
 import SJMediaCacheServer
 
 
-public protocol JXPlayerControlView: NSObjectProtocol {
+public protocol JXPlayerControlViewProtocol: NSObjectProtocol, SJControlLayer {
     var isCurrent: Bool { get set }
     func singleTapEvent()
 }
@@ -39,7 +39,6 @@ open class JXPlayer: NSObject {
         player.accurateSeeking = true
         player.videoGravity = .resizeAspectFill
         player.rotationManager?.isDisabledAutorotation = true
-        player.controlLayerDataSource = self
         player.resumePlaybackWhenPlayerHasFinishedSeeking = false
         player.pausedToKeepAppearState = true
         return player
@@ -55,7 +54,7 @@ open class JXPlayer: NSObject {
         }
     }
 
-    private(set) weak var jx_controlView: JXPlayerControlView?
+    private(set) weak var jx_controlView: JXPlayerControlViewProtocol?
     ///控制层自动隐藏
     public var controlAutomaticallyDisappear = true
     
@@ -83,9 +82,11 @@ open class JXPlayer: NSObject {
         }
     }
     
-    public init(controlView: JXPlayerControlView?) {
+    public init(controlView: JXPlayerControlViewProtocol?) {
         super.init()
         self.jx_controlView = controlView
+        self.player.controlLayerDelegate = controlView
+        self.player.controlLayerDataSource = controlView
         self.controlLayerNeedAppear()
         
         setupPlayer()
@@ -139,7 +140,7 @@ extension JXPlayer {
         self.player.gestureController.supportedGestureTypes = .singleTap
         self.player.gestureController.singleTapHandler = { [weak self] _, _ in
             guard let self = self else { return }
-            if self.controlView()?.isHidden == true {
+            if !self.player.isControlLayerAppeared {
                 self.controlLayerNeedAppear()
             } else {
                 self.jx_controlView?.singleTapEvent()
@@ -151,10 +152,10 @@ extension JXPlayer {
         }
         
         //控制层显示状态改变
-        player.controlLayerAppearObserver.onAppearChanged = { [weak self] manager in
-            guard let self = self else { return }
-            self.controlView()?.isHidden = !self.player.isControlLayerAppeared
-        }
+//        player.controlLayerAppearObserver.onAppearChanged = { [weak self] manager in
+//            guard let self = self else { return }
+//            self.controlView()?.isHidden = !self.player.isControlLayerAppeared
+//        }
         
         //播放完成回调
         self.player.playbackObserver.playbackDidFinishExeBlock = { [weak self] player in
@@ -201,12 +202,5 @@ extension JXPlayer {
     
 }
 
-
-//MARK: --------------   SJVideoPlayerControlLayerDataSource  --------------
-extension JXPlayer: SJVideoPlayerControlLayerDataSource {
-    public func controlView() -> UIView? {
-        return self.jx_controlView as? UIView
-    }
-}
 
 
