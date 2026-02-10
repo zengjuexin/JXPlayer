@@ -20,21 +20,10 @@ open class JXPlayerListControlView: UIView, JXPlayerControlViewProtocol {
         
     }
     
-    public var restarted: Bool = false
-    
     public func controlView() -> UIView! {
         return self
     }
     
-    public func restartControlLayer() {
-        self.restarted = true
-        self.isHidden = false
-    }
-    
-    public func exitControlLayer() {
-        self.restarted = false
-        self.isHidden = true
-    }
     
     public func installedControlView(to videoPlayer: SJBaseVideoPlayer!) {
         

@@ -4,7 +4,7 @@ import SJVideoPlayer
 import SJMediaCacheServer
 
 
-public protocol JXPlayerControlViewProtocol: NSObjectProtocol, SJControlLayer {
+public protocol JXPlayerControlViewProtocol: NSObjectProtocol, SJVideoPlayerControlLayerDataSource, SJVideoPlayerControlLayerDelegate {
     var isCurrent: Bool { get set }
     func singleTapEvent()
 }
@@ -152,10 +152,10 @@ extension JXPlayer {
         }
         
         //控制层显示状态改变
-//        player.controlLayerAppearObserver.onAppearChanged = { [weak self] manager in
-//            guard let self = self else { return }
-//            self.controlView()?.isHidden = !self.player.isControlLayerAppeared
-//        }
+        player.controlLayerAppearObserver.onAppearChanged = { [weak self] manager in
+            guard let self = self else { return }
+            self.player.controlLayerDataSource?.controlView().isHidden = !self.player.isControlLayerAppeared
+        }
         
         //播放完成回调
         self.player.playbackObserver.playbackDidFinishExeBlock = { [weak self] player in
