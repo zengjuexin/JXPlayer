@@ -28,6 +28,14 @@ open class JXPlayerListControlView: UIView, JXPlayerControlViewProtocol {
     public func installedControlView(to videoPlayer: SJBaseVideoPlayer!) {
         
     }
+    
+    public func controlLayerNeedAppear(_ videoPlayer: SJBaseVideoPlayer!) {
+        self.isHidden = false
+    }
+    
+    public func controlLayerNeedDisappear(_ videoPlayer: SJBaseVideoPlayer!) {
+        self.isHidden = true
+    }
 }
 
 

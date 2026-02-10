@@ -151,12 +151,6 @@ extension JXPlayer {
             return self?.controlAutomaticallyDisappear ?? false
         }
         
-        //控制层显示状态改变
-        player.controlLayerAppearObserver.onAppearChanged = { [weak self] manager in
-            guard let self = self else { return }
-            self.player.controlLayerDataSource?.controlView().isHidden = !self.player.isControlLayerAppeared
-        }
-        
         //播放完成回调
         self.player.playbackObserver.playbackDidFinishExeBlock = { [weak self] player in
             guard let self = self else { return }
