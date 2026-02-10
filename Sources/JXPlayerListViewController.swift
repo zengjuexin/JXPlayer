@@ -52,6 +52,7 @@ open class JXPlayerListViewController: UIViewController {
     private var nextPrefetchTask: MCSPrefetchTask?
     
     public var jx_isDidAppear = false
+    public var jx_isDidDisappear = true
     
     private lazy var collectionViewLayout: UICollectionViewLayout = {
         let layout = UICollectionViewFlowLayout()
@@ -92,6 +93,7 @@ open class JXPlayerListViewController: UIViewController {
     open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         jx_isDidAppear = true
+        jx_isDidDisappear = false
         if self.viewModel.isPlaying {
             self.viewModel.currentCell?.start()
         }
@@ -100,11 +102,13 @@ open class JXPlayerListViewController: UIViewController {
     open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         jx_isDidAppear = false
+        jx_isDidDisappear = false
     }
     
     open override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         jx_isDidAppear = false
+        jx_isDidDisappear = true
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
             guard let self = self else { return }
