@@ -2,6 +2,7 @@
 
 import UIKit
 
+@MainActor
 open class JXPlayerListViewModel: NSObject {
     
     weak public var playerListVC: JXPlayerListViewController?

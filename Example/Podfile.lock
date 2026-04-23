@@ -67,8 +67,8 @@ PODS:
   - YYModel (1.0.4)
 
 DEPENDENCIES:
-  - SJMediaCacheServer
-  - SJVideoPlayer
+  - SJMediaCacheServer (= 2.1.6)
+  - SJVideoPlayer (= 3.4.3)
 
 SPEC REPOS:
   trunk:
@@ -87,6 +87,6 @@ SPEC CHECKSUMS:
   SJVideoPlayer: 4f09814f58522e0975cb2dccfda925f6c8643467
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: 51e415b2ac9c278e46f4613cc5541b83ea4a2733
+PODFILE CHECKSUM: f775ad8cba7825b78cd9d2329f9dcb10cd3dd887
 
 COCOAPODS: 1.16.2

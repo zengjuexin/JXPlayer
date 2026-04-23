@@ -3,7 +3,7 @@
 Pod::Spec.new do |spec|
 
   spec.name         = "JXPlayer"
-  spec.version      = "0.2.6"
+  spec.version      = "0.2.7"
   spec.summary      = "基于SJVideoPlayer写的播放列表"
 
   spec.description  = <<-DESC
@@ -23,7 +23,7 @@ Pod::Spec.new do |spec|
   spec.source       = { :git => "https://github.com/zengjuexin/JXPlayer.git", :tag => spec.version.to_s }
 
 
-  spec.ios.deployment_target = '13.0'
+  spec.ios.deployment_target = '15.0'
   spec.swift_version    = '5.0'
   spec.source_files  = "Sources", "Sources/**/*.{h,m,swift}"
  # spec.exclude_files = "Classes/Exclude"
