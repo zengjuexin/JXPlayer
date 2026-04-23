@@ -161,6 +161,7 @@ open class JXPlayerListViewController: UIViewController {
             guard let self = self else { return }
             let cell = self.collectionView.cellForItem(at: viewModel.currentIndexPath) as? JXPlayerCell
             self.viewModel.currentCell = cell
+            self.didChangeIndexPathForVisible()
             completion?()
         }
     }
