@@ -133,4 +133,8 @@ extension JXPlayerListCell: JXPlayerDelegate {
         self.controlView.isLoading = false
     }
     
+    open func jx_player(_ player: JXPlayer, timeControlStatusDidChange status: JXPlayer.TimeControlStatus) {
+        self.viewModel?.playerTimeControlStatusDidChange(player: self, status: status)
+    }
+    
 }

@@ -4,10 +4,10 @@
 target 'JXPlayer' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
-
-#  pod 'SJVideoPlayer', '3.4.3'
+  
+  pod 'SJBaseVideoPlayer', :git => 'https://github.com/zengjuexin/SJBaseVideoPlayer.git', :tag => '3.7.7.2'
+  pod 'SJVideoPlayer'
   pod 'SJMediaCacheServer', '2.1.6'
-  pod 'Masonry'
   
 
 end

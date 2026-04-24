@@ -25,9 +25,16 @@ public protocol JXPlayerControlViewProtocol: NSObjectProtocol, SJVideoPlayerCont
     
     ///调用了播放，缓冲完成正常播放
     @objc optional func jx_playerBufferingCompleted(_ player: JXPlayer)
+    
+    //播放控制改变的回调
+    @objc optional func jx_player(_ player: JXPlayer, timeControlStatusDidChange status: JXPlayer.TimeControlStatus)
 }
 
 open class JXPlayer: NSObject {
+    
+    @objc public enum TimeControlStatus: Int {
+        case waitingToPlay, playing, paused
+    }
     
     private(set) var isPlaying = false
     
@@ -168,11 +175,16 @@ extension JXPlayer {
         //播放控制改变的回调
         self.player.playbackObserver.timeControlStatusDidChangeExeBlock = { [weak self] player in
             guard let self = self else { return }
+            var timeControlStatus = TimeControlStatus.paused
+            
             if player.timeControlStatus == .waitingToPlay {//缓冲中
+                timeControlStatus = .waitingToPlay
                 self.delegate?.jx_playerInBufferToPlay?(self)
             } else if player.timeControlStatus == .playing {
+                timeControlStatus = .playing
                 self.delegate?.jx_playerBufferingCompleted?(self)
             }
+            self.delegate?.jx_player?(self, timeControlStatusDidChange: timeControlStatus)
         }
         
         self.player.playbackObserver.assetStatusDidChangeExeBlock = { [weak self] player in

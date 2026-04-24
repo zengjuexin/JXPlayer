@@ -58,4 +58,9 @@ extension JXPlayerListViewModel {
         }
     }
     
+    ///播放控制改变的回调
+    @objc open func playerTimeControlStatusDidChange(player: JXPlayerCell, status: JXPlayer.TimeControlStatus) {
+        
+        
+    }
 }
