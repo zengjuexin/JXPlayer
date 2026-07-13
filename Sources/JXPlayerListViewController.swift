@@ -14,6 +14,8 @@ import SJMediaCacheServer
     
     @objc optional func jx_shouldAutoScrollNextEpisode(_ viewController: JXPlayerListViewController) -> Bool
     
+    @objc optional func jx_playerViewScrollDidEnd()
+    
 }
 
 @objc public protocol JXPlayerListViewControllerDataSource {
@@ -267,10 +269,12 @@ extension JXPlayerListViewController: UICollectionViewDelegate, UICollectionView
     //滑动停止
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         scrollDidEnd()
+        self.delegate?.jx_playerViewScrollDidEnd?()
     }
     
     public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         scrollDidEnd()
+        self.delegate?.jx_playerViewScrollDidEnd?()
     }
     
     private func scrollDidEnd() {
