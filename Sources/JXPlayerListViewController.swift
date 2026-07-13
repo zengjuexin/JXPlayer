@@ -14,7 +14,8 @@ import SJMediaCacheServer
     
     @objc optional func jx_shouldAutoScrollNextEpisode(_ viewController: JXPlayerListViewController) -> Bool
     
-    @objc optional func jx_playerViewScrollDidEnd()
+    ///滑动切换
+    @objc optional func jx_playerListViewController(_ viewController: JXPlayerListViewController, didEndScorllSwitch indexPath: IndexPath, isDragging: Bool)
     
 }
 
@@ -55,6 +56,9 @@ open class JXPlayerListViewController: UIViewController {
     
     public var jx_isDidAppear = false
     public var jx_isDidDisappear = true
+    
+    ///拖拽开始点
+    private var beginDraggingIndex: IndexPath?
     
     private lazy var collectionViewLayout: UICollectionViewLayout = {
         let layout = UICollectionViewFlowLayout()
@@ -266,15 +270,21 @@ extension JXPlayerListViewController: UICollectionViewDelegate, UICollectionView
         self.dataSource?.jx_numberOfSections?(in: self) ?? 1
     }
     
+    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        self.beginDraggingIndex = self.viewModel.currentIndexPath
+    }
+    
     //滑动停止
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         scrollDidEnd()
-        self.delegate?.jx_playerViewScrollDidEnd?()
+        if self.beginDraggingIndex != self.viewModel.currentIndexPath {
+            self.delegate?.jx_playerListViewController?(self, didEndScorllSwitch: self.viewModel.currentIndexPath, isDragging: true)
+        }
     }
     
     public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         scrollDidEnd()
-        self.delegate?.jx_playerViewScrollDidEnd?()
+        self.delegate?.jx_playerListViewController?(self, didEndScorllSwitch: self.viewModel.currentIndexPath, isDragging: false)
     }
     
     private func scrollDidEnd() {
