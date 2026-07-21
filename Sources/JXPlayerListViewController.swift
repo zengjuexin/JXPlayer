@@ -141,6 +141,7 @@ open class JXPlayerListViewController: UIViewController {
         }
         
         self.viewModel.isPlaying = true
+        self.viewModel.isUserPause = false
         
         if (self.collectionView.contentSize.height - self.collectionView.contentOffset.y) / self.contentSize.height <= 3 {
             self.loadMoreData()

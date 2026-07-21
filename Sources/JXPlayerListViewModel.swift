@@ -18,6 +18,9 @@ open class JXPlayerListViewModel: NSObject {
     
     @objc open dynamic var isPlaying: Bool = true
     
+    ///是否由用户点出出发的暂停
+    open var isUserPause = false
+    
     open var currentIndexPath = IndexPath(row: 0, section: 0)
     
     required public override init() {
@@ -32,8 +35,10 @@ open class JXPlayerListViewModel: NSObject {
     open func userSwitchPlayAndPause() {
         if self.isPlaying {
             self.playerListVC?.pause()
+            self.isUserPause = true
         } else {
             self.playerListVC?.play()
+            self.isUserPause = false
         }
     }
     
