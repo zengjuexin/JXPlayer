@@ -14,6 +14,9 @@ import SJMediaCacheServer
     
     @objc optional func jx_shouldAutoScrollNextEpisode(_ viewController: JXPlayerListViewController) -> Bool
     
+    ///适用于后台进入前台跟viewDidAppear进入页面
+    @objc optional func jx_allowPlay(_ viewController: JXPlayerListViewController) -> Bool
+    
     ///滑动切换
     @objc optional func jx_playerListViewController(_ viewController: JXPlayerListViewController, didEndScorllSwitch indexPath: IndexPath, isDragging: Bool)
     
@@ -100,9 +103,7 @@ open class JXPlayerListViewController: UIViewController {
         super.viewDidAppear(animated)
         jx_isDidAppear = true
         jx_isDidDisappear = false
-        if self.viewModel.isPlaying {
-            self.viewModel.currentCell?.start()
-        }
+        self.resumePlayback()
     }
     
     open override func viewWillDisappear(_ animated: Bool) {
@@ -151,6 +152,13 @@ open class JXPlayerListViewController: UIViewController {
     open func pause() {
         self.viewModel.currentCell?.pause()
         self.viewModel.isPlaying = false
+    }
+    
+    ///恢复播放 后台进入前台，或者其它页面回到当前页面会调
+    open func resumePlayback() {
+        if self.viewModel.isPlaying && jx_isDidAppear && self.delegate?.jx_allowPlay?(self) != false {
+            self.viewModel.currentCell?.start()
+        }
     }
     
     open func clearData() {
@@ -338,9 +346,7 @@ extension JXPlayerListViewController {
 extension JXPlayerListViewController {
     
     @objc open func didBecomeActiveNotification() {
-        if self.viewModel.isPlaying && jx_isDidAppear {
-            self.viewModel.currentCell?.start()
-        }
+        self.resumePlayback()
     }
     
     @objc open func willResignActiveNotification() {
