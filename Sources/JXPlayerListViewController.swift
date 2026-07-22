@@ -60,6 +60,8 @@ open class JXPlayerListViewController: UIViewController {
     public var jx_isDidAppear = false
     public var jx_isDidDisappear = true
     
+    open var jx_isAppActive = true
+    
     ///拖拽开始点
     private var beginDraggingIndex: IndexPath?
     
@@ -137,7 +139,7 @@ open class JXPlayerListViewController: UIViewController {
     open var nextVideoUrl: String? { return nil }
     
     open func play() {
-        if self.jx_isDidAppear {
+        if self.jx_isDidAppear, self.jx_isAppActive {
             self.viewModel.currentCell?.start()
         }
         
@@ -156,6 +158,7 @@ open class JXPlayerListViewController: UIViewController {
     
     ///恢复播放 后台进入前台，或者其它页面回到当前页面会调
     open func resumePlayback() {
+        guard self.jx_isAppActive else { return }
         if self.viewModel.isPlaying && jx_isDidAppear && self.delegate?.jx_allowPlay?(self) != false {
             self.viewModel.currentCell?.start()
         }
@@ -346,10 +349,12 @@ extension JXPlayerListViewController {
 extension JXPlayerListViewController {
     
     @objc open func didBecomeActiveNotification() {
+        self.jx_isAppActive = true
         self.resumePlayback()
     }
     
     @objc open func willResignActiveNotification() {
+        self.jx_isAppActive = false
         self.viewModel.currentCell?.pause()
     }
 }
