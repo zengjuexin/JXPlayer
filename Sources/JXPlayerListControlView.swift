@@ -3,9 +3,18 @@
 import UIKit
 import SJVideoPlayer
 
+@objc public protocol JXPlayerListControlViewDelegate {
+    
+    @objc optional func jx_playerListControlViewDidAppear(_ controlView: JXPlayerListControlView)
+    
+    @objc optional func jx_playerListControlViewDidDisappear(_ controlView: JXPlayerListControlView)
+}
+
 open class JXPlayerListControlView: UIView, JXPlayerControlViewProtocol {
     
     weak open var viewModel: JXPlayerListViewModel?
+    
+    weak var delegate: JXPlayerListControlViewDelegate?
     
     open var model: Any?
     
@@ -39,10 +48,12 @@ open class JXPlayerListControlView: UIView, JXPlayerControlViewProtocol {
     
     open func jx_controlLayerNeedAppear(_ controlView: JXPlayerListControlView) {
         self.isHidden = false
+        self.delegate?.jx_playerListControlViewDidAppear?(self)
     }
     
     open func jx_controlLayerNeedDisappear(_ controlView: JXPlayerListControlView) {
         self.isHidden = true
+        self.delegate?.jx_playerListControlViewDidDisappear?(self)
     }
 }
 
