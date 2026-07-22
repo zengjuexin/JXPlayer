@@ -14,7 +14,7 @@ open class JXPlayerListControlView: UIView, JXPlayerControlViewProtocol {
     
     weak open var viewModel: JXPlayerListViewModel?
     
-    weak var delegate: JXPlayerListControlViewDelegate?
+    weak open var delegate: JXPlayerListControlViewDelegate?
     
     open var model: Any?
     
