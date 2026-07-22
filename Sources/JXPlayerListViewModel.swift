@@ -7,12 +7,21 @@ open class JXPlayerListViewModel: NSObject {
     
     weak public var playerListVC: JXPlayerListViewController?
     
+    public var controlViewDidAppearHandle: (() -> Void)?
+    public var controlViewDidDisappearHandle: (() -> Void)?
+    
     open var currentCell: JXPlayerCell? {
         didSet {
             oldValue?.isCurrent = false
             oldValue?.pause()
-            
             self.currentCell?.isCurrent = true
+            
+            guard let cell = currentCell as? JXPlayerListCell else { return }
+            if cell.controlView.isHidden {
+                self.controlViewDidDisappear()
+            } else {
+                self.controlViewDidAppear()
+            }
         }
     }
     
@@ -40,6 +49,14 @@ open class JXPlayerListViewModel: NSObject {
             self.playerListVC?.play()
             self.isUserPause = false
         }
+    }
+    
+    open func controlViewDidAppear() {
+        self.controlViewDidAppearHandle?()
+    }
+    
+    open func controlViewDidDisappear() {
+        self.controlViewDidDisappearHandle?()
     }
     
 }

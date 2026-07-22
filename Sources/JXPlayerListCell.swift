@@ -63,7 +63,7 @@ open class JXPlayerListCell: UICollectionViewCell, JXPlayerCell {
     
     override public init(frame: CGRect) {
         super.init(frame: frame)
-        
+        self.controlView.delegate = self
         contentView.addSubview(playerView)
         playerView.frame = contentView.bounds
         playerView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -100,6 +100,19 @@ open class JXPlayerListCell: UICollectionViewCell, JXPlayerCell {
     
     open func seek(toTime: TimeInterval) {
         self.player.seek(toTime: toTime)
+    }
+}
+
+extension JXPlayerListCell: JXPlayerListControlViewDelegate {
+    
+    open func jx_playerListControlViewDidAppear(_ controlView: JXPlayerListControlView) {
+        guard isCurrent else { return }
+        self.viewModel?.controlViewDidAppear()
+    }
+    
+    open func jx_playerListControlViewDidDisappear(_ controlView: JXPlayerListControlView) {
+        guard isCurrent else { return }
+        self.viewModel?.controlViewDidDisappear()
     }
 }
 
