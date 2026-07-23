@@ -14,6 +14,7 @@ open class JXPlayerListViewModel: NSObject {
         didSet {
             oldValue?.isCurrent = false
             oldValue?.pause()
+            self.isUserPause = false
             self.currentCell?.isCurrent = true
             
             guard let cell = currentCell as? JXPlayerListCell else { return }
